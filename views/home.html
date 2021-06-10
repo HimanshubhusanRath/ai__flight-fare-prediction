@@ -21,7 +21,7 @@
 			<div class="form-div">
 				<h4>Number of Stops :</h4>
 				<select name="Total_Stops">
-					<option value="0">Non-Stop</option>
+					<option value="0" selected>Non-Stop</option>
 					<option value="1">1 Stop</option>
 					<option value="2">2 stops</option>
 					<option value="3">3 stops</option>
@@ -32,6 +32,7 @@
 			<div class="form-div">
 				<h4>Fly From</h4>
 				<select name="Source_city">
+					<option value="Select" selected>---</option>
 				{% for source_city in data['source_cities']%}
 					<option value="{{source_city}}">{{source_city}}</option>
 				{% endfor %}
@@ -41,6 +42,7 @@
 			<div class="form-div">
 				<h4>Fly To</h4>
 				<select name="Destination_city">
+					<option value="Select" selected>---</option>
 				{% for dest_city in data['destination_cities']%}
 					<option value="{{dest_city}}">{{dest_city}}</option>
 				{% endfor %}
@@ -50,6 +52,7 @@
 			<div class="form-div">
 				<h4>Preferred Airline</h4>
 				<select name="Airline">
+					<option value="Select" selected>---</option>
 				{% for airline_name in data['airlines']%}
 					<option value="{{airline_name}}">{{airline_name}}</option>
 				{% endfor %}
@@ -71,10 +74,14 @@
 				<input type="submit" value="Predict">
 			</div>
 		</form>
-	</div>
 
-	<br><br>
-	<h3>{{ prediction_text }}</h3>
+		<div class="form-div" style='color:red'>
+			<h3>{{ prediction_text }}</h3>
+		</div>
+		<br/>
+		<br/>
+		<br/>
+	</div>
 
 </body>
 </html>

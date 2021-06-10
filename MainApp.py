@@ -9,6 +9,7 @@ import jsonify
 import pandas as pd
 import pickle
 import datetime
+import numpy as np
 import calendar
 
 
@@ -19,9 +20,13 @@ import calendar
 model = pickle.load(open('flight-fare-prediction-model.pkl','rb'))
 
 # Load the saved data to show on the page
-airlines = pickle.load(open('saved_data/airlines.pkl','rb'))
+airlines = list(pickle.load(open('saved_data/airlines.pkl','rb')))
 source_cities = pickle.load(open('saved_data/source_cities.pkl','rb'))
 destination_cities = pickle.load(open('saved_data/destination_cities.pkl','rb'))
+
+# Remove outlier 'Jet Airways Business' from airlines 
+airlines.remove('Jet Airways Business')
+airlines = np.asarray(airlines)
 
 data = {}
 data['airlines'] = airlines
@@ -30,6 +35,12 @@ data['destination_cities'] = destination_cities
 
 
 # In[3]:
+
+
+airlines
+
+
+# In[4]:
 
 
 # Utility methods
@@ -47,20 +58,14 @@ def find_week_day(date):
         return date  
 
 
-# In[ ]:
-
-
-
-
-
-# In[4]:
+# In[5]:
 
 
 # Define the main app
 app = Flask(__name__,template_folder='views')
 
 
-# In[5]:
+# In[6]:
 
 
 # Define the end points
@@ -194,8 +199,8 @@ def predict():
     print(Duration)
     # Predict
     air_fare = model.predict([[Total_Stops,Airline_JetAirways,Journey_Day,Duration,Journey_Month,Arrival_Hour ,Dept_Hour , Weekday,Destination_NewDelhi, Airline_MultipleCarriers,Airline_IndiGo, Airline_AirIndia,Destination_Delhi , Destination_Cochin,Source_Delhi , Source_Mumbai ,Destination_Hyderabad, Airline_Vistara,Source_Kolkata ,Airline_SpiceJet]])
-    print(f'Air fare is predicted as : {air_fare}')
-    return render_template('home.html',prediction_text="Predicted Air Fare : {}".format(air_fare),data=data)
+    print(f'Air fare is predicted as : {air_fare[0]}')
+    return render_template('home.html',prediction_text="Predicted Air Fare is Rs. {}".format(air_fare[0]),data=data)
     
 
 
@@ -205,60 +210,6 @@ def predict():
 # Start the App in DEBUG mode.
 if __name__=="__main__":
     app.run(debug=True, use_reloader=False)
-
-
-# In[ ]:
-
-
-
-
-
-# In[27]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[19]:
-
-
-journey_date = '2021-06-09T20:23'
-Journey_Date = datetime.datetime.fromisoformat('2021-06-09T20:23')
-Journey_Day = Journey_Date.day
-Journey_Month = Journey_Date.month
-
-
-# In[25]:
-
-
-Journey_Date.weekday()
-
-
-# In[32]:
-
-
-find_week_day('2021-06-09T20:23')
-
-
-# In[36]:
-
-
-datetime_start = datetime.datetime.fromisoformat('2021-06-09T18:23')
-datetime_end = datetime.datetime.fromisoformat('2021-06-10T01:23')
-minutes_diff = (datetime_end - datetime_start).total_seconds()/3600
-minutes_diff
-
-
-# In[7]:
-
-
-date = now()
 
 
 # In[ ]:
