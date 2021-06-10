@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Air Fare Prediction</title>
+
+<style>
+.form-div
+{
+	padding-top : 15px;
+}
+
+
+</style>
+
+</head>
+<body>
+	<div style="text-align:center">
+		<h1 style="color:green">Predict the flight ticket price</h2>
+		<form action="{{ url_for('predict')}}" method="post">
+			<div class="form-div">
+				<h4>Number of Stops :</h4>
+				<select name="Total_Stops">
+					<option value="0">Non-Stop</option>
+					<option value="1">1 Stop</option>
+					<option value="2">2 stops</option>
+					<option value="3">3 stops</option>
+					<option value="4">4 stops</option>
+				</select>
+			</div>
+
+			<div class="form-div">
+				<h4>Fly From</h4>
+				<select name="Source_city">
+				{% for source_city in data['source_cities']%}
+					<option value="{{source_city}}">{{source_city}}</option>
+				{% endfor %}
+				</select>
+			</div>
+
+			<div class="form-div">
+				<h4>Fly To</h4>
+				<select name="Destination_city">
+				{% for dest_city in data['destination_cities']%}
+					<option value="{{dest_city}}">{{dest_city}}</option>
+				{% endfor %}
+				</select>
+			</div>
+
+			<div class="form-div">
+				<h4>Preferred Airline</h4>
+				<select name="Airline">
+				{% for airline_name in data['airlines']%}
+					<option value="{{airline_name}}">{{airline_name}}</option>
+				{% endfor %}
+				</select>
+			</div>
+
+			<div class="form-div">
+				<h4>Enter Departure Date & Time :</h4>
+				<input type="datetime-local" id="Departure_datetime" name="Departure_datetime">
+			</div>	
+			
+			<div class="form-div">
+				<h4>Enter Arrival Date & Time :</h4>
+				<input type="datetime-local" id="Arrival_datetime" name="Arrival_datetime">
+			</div>
+			
+
+			<div class="form-div">
+				<input type="submit" value="Predict">
+			</div>
+		</form>
+	</div>
+
+	<br><br>
+	<h3>{{ prediction_text }}</h3>
+
+</body>
+</html>
